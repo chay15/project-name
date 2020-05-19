@@ -1,17 +1,44 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+class Clock extends React.Component {
+  constructor(props) {
+    console.log('props');
+    super(props);
+    this.state = {
+      date: new Date(),
+    };
+  }
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+  componentDidMount() {
+    console.log('componentDidMount');
+    this.timerId = setInterval(() => this.tick(), 100);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timerId);
+  }
+
+  tick() {
+    // 改变 state 值， 固定写法
+    console.log('tick');
+
+    this.setState({
+      date: new Date(),
+    });
+  }
+
+  render() {
+    const { date } = this.state;
+
+    console.log('date', date);
+
+    return (
+      <div>
+        <h2>现在是 {date.toLocaleTimeString()}</h2>
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(<Clock />, document.querySelector('#root'));
